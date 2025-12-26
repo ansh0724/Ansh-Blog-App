@@ -1,0 +1,85 @@
+/* 1. Global Styles: Poore page ka basic look */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa; /* Light grey background */
+    color: #333;
+}
+
+/* 2. Container: Content ko beech mein rakhne ke liye */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* 3. Blog Card: Har blog post ka box */
+.blog-card {
+    background: white;
+    padding: 25px;
+    margin-bottom: 30px;
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Halki si shadow */
+    transition: transform 0.3s ease; /* Hover effect ke liye */
+}
+
+.blog-card:hover {
+    transform: translateY(-5px); /* Upar uthne wala effect */
+}
+
+/* 4. Typography: Heading aur Links */
+.blog-card h3 a {
+    color: #2c3e50;
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+
+.blog-card h3 a:hover {
+    color: #007bff;
+}
+
+/* 5. Buttons: Edit aur Delete buttons ka look */
+.btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    margin-right: 10px;
+}
+
+.btn-edit { background: #e3f2fd; color: #007bff; }
+.btn-edit:hover { background: #007bff; color: white; }
+
+.btn-delete { background: #ffebee; color: #dc3545; }
+.btn-delete:hover { background: #dc3545; color: white; }
+
+/* 6. Forms: Create aur Edit form ka design */
+.blog-form {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.blog-form input, .blog-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 25px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box; /* Padding se size na badle */
+    font-size: 16px;
+}
+
+.btn-submit {
+    background: #007bff;
+    color: white;
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+}

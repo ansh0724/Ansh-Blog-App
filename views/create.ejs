@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Blog ✨</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('./partials/nav.ejs') %>
+    
+    <div class="form-container container blog-form">
+        <h1>📝 Write Your Blog</h1>
+        <form action="/add-blog" method="post">
+            <label for="title">Blog Title:</label>
+            <input type="text" id="title" name="title" placeholder="Enter an interesting title..." required>
+
+            <label for="author">Author Name:</label>
+            <input type="text" id="author" name="author" placeholder="Your name..." required>
+
+            <label for="snippet">Blog Snippet:</label>
+            <input type="text" id="snippet" name="snippet" placeholder="A brief summary of your blog..." required>
+
+            <label for="body">Blog Body:</label>
+            <textarea id="body" name="body" placeholder="Write your amazing blog here..." required></textarea>
+
+            <button type="submit">✨ Publish Blog</button>
+        </form>
+    </div>
+</body>
+</html>

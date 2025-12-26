@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Blog | Ansh</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    <%- include('./partials/nav.ejs') %>
+
+    <div class="form-container container blog-form">
+        <h1>✏️ Edit Your Blog</h1>
+        
+        <form action="/update-blog/<%= blog._id %>" method="post">
+            <label>Blog Title:</label>
+            <input type="text" name="title" value="<%= blog.title %>" required>
+
+            <label>Author:</label>
+            <input type="text" name="author" value="<%= blog.author %>" required>
+
+            <label>Blog Snippet:</label>
+            <input type="text" name="snippet" value="<%= blog.snippet %>" required>
+
+            <label>Blog Body:</label>
+            <textarea name="body" required><%= blog.body %></textarea>
+
+            <button type="submit">💾 Update Blog</button>
+        </form>
+    </div>
+
+</body>
+</html>
