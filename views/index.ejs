@@ -12,28 +12,38 @@
 
     <%- include('./partials/nav.ejs') %>
 
-    <div class="container">
-        <h1>✨ All Blogs 📝</h1>
-        <a href="/create" class="create-link">+ Create New Blog</a>
+        <div class="container">
+            <h1>✨ All Blogs 📝</h1>
+            <% if(currentUser) { %>
+                <a href="/create" class="create-link">+ Create New Blog</a>
+                <% } %>
 
-        <div class="blogs-content">
-            <% if (blogs.length > 0) { %>
-                <% blogs.forEach(blog => { %>
-                    <div class="blog-card">
-                        <h3><a href="/blogs/<%= blog._id %>"><%= blog.title %></a></h3>
-                        <p><strong>Author:</strong> <%= blog.author %></p>
-                        <p><%= blog.snippet %></p>
-                        <div style="margin-top: 20px;">
-                            <a href="/edit-blog/<%= blog._id %>" class="btn btn-edit">✏️ Edit</a>
-                            <a href="/delete-blog/<%= blog._id %>" class="btn btn-delete">🗑️ Delete</a>
-                        </div>
+                    <div class="blogs-content">
+                        <% if (blogs.length> 0) { %>
+                            <% blogs.forEach(blog=> { %>
+                                <div class="blog-card">
+                                    <h3><a href="/blogs/<%= blog._id %>">
+                                            <%= blog.title %>
+                                        </a></h3>
+                                    <p><strong>Author:</strong>
+                                        <%= blog.author.username %>
+                                    </p>
+                                    <p>
+                                        <%= blog.snippet %>
+                                    </p>
+                                    <% if (currentUser && blog.author.id.toString()===currentUser._id.toString()) { %>
+                                        <div style="margin-top: 20px;">
+                                            <a href="/edit-blog/<%= blog._id %>" class="btn btn-edit">✏️ Edit</a>
+                                            <a href="/delete-blog/<%= blog._id %>" class="btn btn-delete">🗑️ Delete</a>
+                                        </div>
+                                        <% } %>
+                                </div>
+                                <% }) %>
+                                    <% } else { %>
+                                        <p>🌟 Abhi tak koi blog nahi hai. Pehla blog likhiye! ✨</p>
+                                        <% } %>
                     </div>
-                <% }) %>
-            <% } else { %>
-                <p>🌟 Abhi tak koi blog nahi hai. Pehla blog likhiye! ✨</p>
-            <% } %>
         </div>
-    </div>
 
 </body>
 

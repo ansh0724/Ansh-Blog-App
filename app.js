@@ -1,9 +1,12 @@
-require('dotenv').config({ path: './secure.env' });
-
+require('dotenv').config();
+const passportLocalMongoose = require('passport-local-mongoose').default || require('passport-local-mongoose');
 const express = require('express');
 const mongoose = require('mongoose');
+const session = require('express-session'); 
+const passport = require('passport');
 const app = express();
 const port = process.env.PORT || 3000;
+const LocalStrategy = require('passport-local').Strategy;
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -14,12 +17,21 @@ const postSchema = new mongoose.Schema({
     title: { type: String, required: true },
     snippet: { type: String, required: true },
     body: { type: String, required: true },
-    author: { type: String, required: true },
+    author:{
+        id:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'User'
+        },
+        username:String,
+    },
     createdAt: { type: Date, default: Date.now }
-
-})
+});
 
 const Post = mongoose.model('Post', postSchema);
+
+const userSchema = new mongoose.Schema({});
+userSchema.plugin(passportLocalMongoose);
+const User = mongoose.model('User', userSchema)
 
 const dbUrl = process.env.MONGODB_URI;
 
@@ -35,6 +47,55 @@ mongoose.connect(dbUrl).then(() => {
     process.exit(1);
 });
 
+app.use(session({
+    secret:"MySuperSecretKey123",
+    resave:false,
+    saveUninitialized:false,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use((req,res,next)=>{
+    res.locals.currentUser = req.user;
+    next();
+})
+
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.get('/register',(req,res)=>{
+    res.render('register',{error:null});
+})
+
+app.post('/register', async (req,res)=>{
+    try{
+        const{username,password} = req.body;
+        const user = new User({username});
+        const registeredUser = await User.register(user, password);
+        req.login(registeredUser, (err) => {
+            if(err) return next(err);
+            console.log("User ban gaya aur Login bhi ho gya!");
+            res.redirect('/');
+        });
+    }catch(e){
+
+        console.log("Registration Error:", e.message);
+        res.render("register",{error: "User already exist"})
+
+    }
+})
+
+app.get('/login',(req,res)=>{
+    res.render('login');
+})
+app.post('/login', passport.authenticate('local',{
+    failureRedirect:'/login',
+    successRedirect:'/'
+}),(req,res)=>{
+    console.log("User Logged In Sucessfully!");
+});
+
+
 app.get('/', async (req, res) => {
     // res.send("Welcome to Ansh's Blog");
     try {
@@ -45,12 +106,30 @@ app.get('/', async (req, res) => {
     }
 });
 
+app.get('/logout',(req,res,next)=>{
+    req.logout((err)=>{
+        if(err){
+            return next(err);
+        }else{
+            res.redirect('/')
+        }
+    })
+})
+
 app.post('/add-blog', async (req, res) => {
+
+    if(!req.isAuthenticated()){
+        return res.redirect('/login');
+    }
+
     const post = new Post({
         title: req.body.title,
         snippet: req.body.snippet,
         body: req.body.body,
-        author: req.body.author,
+        author:{
+            id:req.user._id,
+            username:req.user.username,
+        }
     });
     try {
         const result = await post.save();

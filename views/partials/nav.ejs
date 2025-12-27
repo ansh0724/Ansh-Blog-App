@@ -1,9 +1,13 @@
 <nav>
-    <div class="site-title">
-        <h1>📚 Ansh's Blog</h1>
+    <div class="nav-links">
+        <a href="/">🏠 Home</a>
+        
+        <% if(!currentUser) { %>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        <% } else { %>
+            <a href="/create">New Blog</a>
+            <a href="/logout" style="color: red;">Logout (<%= currentUser.username %>)</a>
+        <% } %>
     </div>
-    <ul>  
-        <li><a href="/">🏠 Home</a></li>
-        <li><a href="/create">✍️ New Blog</a></li>    
-    </ul>
 </nav>
